@@ -1,0 +1,21 @@
+/**
+ * Variables, Properties, Parameters, Constants, enabled for the project
+ */
+
+/**
+ * PROPERTIES
+ */
+    //apply for S.O Windows, fixing native separator to standard separator
+    System.setProperty('user.dir',System.getProperty('user.dir').replace("\\","/"))
+
+    //url package base in format path "/"
+    System.setProperty("build.gradle.project.package.base.url",System.getProperty('gradle.props.project.package.base').replace('.','/'))
+    //time run
+    System.setProperty("build.gradle.system.currentTimeMillis",String.valueOf(System.currentTimeMillis()))
+
+    //execute test by tags (@Tag)
+    if(     //System.getProperty("cucumber.filter.tags",null)==null &&
+            System.getProperty("tags",null) != null
+    ){
+        System.setProperty("cucumber.filter.tags",System.getProperty("tags"))
+    }

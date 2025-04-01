@@ -1,0 +1,66 @@
+#trigger: none
+
+#resources:
+#  pipelines:
+#    - pipeline: salto-front-vars-dev
+#      project: devops-alil-product
+#      source: devops-alil-product-core-frontend-qa
+#      branch: main
+#      trigger:
+#        branches:
+#          include:
+#            - main
+
+#  repositories:
+#    - repository: product-qa
+#      type: git
+#      name: devops-qa-automation/devops-qa-product
+#      ref: main
+#      trigger:
+#        - main
+
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+  - job: Build
+    displayName: 'Build and Test Job'
+    steps:
+      - task: Gradle@2
+        inputs:
+          gradleWrapperFile: 'gradlew'
+          tasks: 'test'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '17'
+          gradleOptions: '-Xmx3072m'
+          sonarQubeRunAnalysis: false
+          spotBugsAnalysis: false
+          options: '-Denvironment=pipeline'
+        continueOnError: true
+
+      # better than PublishBuildArtifacts@1 task
+      #- task: PublishPipelineArtifact@1
+      #  inputs:
+      #    targetPath: './target/site/serenity'
+      #    artifact: 'Serenity-Report'
+      #  continueOnError: true
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: './history'
+          artifact: 'Reports'
+        continueOnError: true
+
+      # research
+      - task: PublishHtmlReport@1
+        displayName: 'Publish HTML Report'
+        inputs:
+          reportDir: './target/site/serenity/report/serenity-summary.html'
+          tabName: 'Serenity'
+        continueOnError: true
+

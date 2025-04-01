@@ -1,0 +1,22 @@
+/**
+ * Setup related with java
+ */
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+java {
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+}
+
+def varEncoding = System.getProperty("gradle.props.project.encode")
+
+compileJava {
+    options.encoding = "${varEncoding}"
+}
+compileTestJava {
+    options.encoding = "${varEncoding}"
+}
+
+

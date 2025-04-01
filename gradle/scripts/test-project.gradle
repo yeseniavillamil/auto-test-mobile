@@ -1,0 +1,13 @@
+
+defaultTasks 'clean','test','aggregate'
+
+gradle.startParameter.continueOnFailure = true
+
+serenity {
+    testRoot = System.getProperty("gradle.props.project.package.base")+".runners"
+    requirementsBaseDir = System.getProperty("gradle.props.project.package.resource.test.url")+"/features"
+    reports = [
+            "single-page-html",
+            "navigator"
+    ]
+}

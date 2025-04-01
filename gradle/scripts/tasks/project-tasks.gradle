@@ -1,0 +1,6 @@
+/**
+ * gradle task scripts personalized, for use in the process
+ */
+apply from: "gradle/scripts/tasks/preproduction-tasks.gradle"
+apply from: "gradle/scripts/tasks/production-tasks.gradle"
+apply from: "gradle/scripts/tasks/postproduction-tasks.gradle"

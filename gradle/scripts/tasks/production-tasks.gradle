@@ -1,0 +1,65 @@
+/**
+ * list tasks designed for deploy as core the process
+ */
+
+
+/**
+ * fixing test task
+ */
+test {
+    useJUnitPlatform()//enable JUnit5
+    systemProperties System.getProperties()
+
+    //execute runners in paralell, enable when managed sessions is coverage
+    maxParallelForks = Runtime.runtime.availableProcessors()
+
+    testLogging.showStandardStreams = true
+
+//    retry {
+//        /**
+//         * setup retry failed scenarios
+//         * https://github.com/gradle/test-retry-gradle-plugin
+//         */
+//        maxRetries = 1
+//        maxFailures = 20
+//        failOnPassedAfterRetry = false
+//    }
+
+//    doFirst {
+//        def rerunFailed = false
+//        def rerunFile = file('src/test/resources/features/rerun-failed.txt')
+//        if (rerunFile.exists()) {
+//            println 'ENTROO'
+//            def rerunLines = rerunFile.readLines().join(',')
+//            if (rerunLines != null && !rerunLines.isEmpty()){
+//                //systemProperty 'cucumber.features', rerunLines
+//                //systemProperty 'cucumber.filter.tags', ' '
+//                rerunFailed = true
+//            }
+//
+//            println "rerunLines: "+rerunLines
+//        }else{
+//            println 'NO ENTROO'
+//        }
+//
+//        if(rerunFailed){
+//
+//        }
+//    }
+
+    //String vEnvironment = System.getProperty('environment')
+
+    //-Denvironment se resuelve como "pipeline" desde el pipeline de jenkins a traves de Jenkinsfile.yml
+    /*
+    if('pipeline'.equalsIgnoreCase(vEnvironment))
+    {
+        //https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/TestFilter.html
+        filter {
+            //only are executed the test runners including in this package
+            includeTestsMatching System.getProperty('gradle.props.project.package.base')+'.runners.pipeline.*'
+
+        }
+    }
+     */
+
+}

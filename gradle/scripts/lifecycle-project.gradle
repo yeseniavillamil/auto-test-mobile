@@ -1,0 +1,39 @@
+/**
+ * Managemment all task use in the project lifecycle
+ */
+
+/**
+ * Invoke and related gradle script with list tasks
+ */
+apply from: "gradle/scripts/tasks/project-tasks.gradle"
+
+
+/**
+ * clean task before compileJava task
+ * //clearReports task before test task
+ */
+compileJava.dependsOn(clean)
+//test.dependsOn(clearReports)
+
+
+/**
+ * aggregate task after test task
+ * build report target
+ */
+test.finalizedBy(aggregate)
+
+/**
+ * reports task after aggregate task
+ * build report summary, one single page html
+ * ./target/site/serenity/../serenity-summary.html
+ * ./target/site/serenity/../navigator/index.html
+ */
+aggregate.finalizedBy(reports)
+
+/**
+ * generateFilmTicket task personalized after reports task
+ * organize report serenity: ./target/site/serenity
+ */
+reports.finalizedBy(generateFilmTicket)
+
+generateFilmTicket.finalizedBy(historyReports)

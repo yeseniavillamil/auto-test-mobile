@@ -1,0 +1,222 @@
+/** build.gradle acopled
+ *
+ */
+
+/**
+ * INTEGRATION REPOSITORIES (ARTIFACTORY)
+ * /gradle/scripts/integration-local-project.gradle
+ */
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        /**
+         * verify serenity gradle plugin version is compatible with serenity core version
+         * could find conflicts in the generation of the report
+         */
+        classpath("net.serenity-bdd:serenity-gradle-plugin:${serenityGradleVersion}")
+        //classpath("org.gradle:test-retry-gradle-plugin:${gradleRetryTestVersion}")
+        classpath "net.serenity-bdd:serenity-single-page-report:${serenitySummaryReportVersion}"
+        classpath "net.serenity-bdd:serenity-navigator-report:${serenitySummaryReportVersion}"
+    }
+}
+
+//active serenity-gradle-plugin
+//https://plugins.gradle.org/plugin/net.serenity-bdd.serenity-gradle-plugin
+apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
+
+//active retry failed scenarios, https://github.com/gradle/test-retry-gradle-plugin
+//not working for JUnit 5
+//apply plugin: "org.gradle.test-retry"
+
+
+/**
+ * SETUP JAVA-PROJECT
+ * /gradle/scripts/java-project.gradle
+ */
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    java {
+        sourceCompatibility = "${javaVersion}"
+        targetCompatibility = "${javaVersion}"
+    }
+
+    def varEncoding = System.getProperty("gradle.props.project.encode")
+
+    compileJava {
+        options.encoding = "${varEncoding}"
+    }
+    compileTestJava {
+        options.encoding = "${varEncoding}"
+    }
+
+/**
+ * ADICIONAL PROPERTIES
+ * /gradle/scripts/variables-project.gradle
+ */
+    //apply for S.O Windows, fixing native separator to standard separator
+    System.setProperty('user.dir',System.getProperty('user.dir').replace("\\","/"))
+
+    //url package base in format path "/"
+    System.setProperty("build.gradle.project.package.base.url",System.getProperty('gradle.props.project.package.base').replace('.','/'))
+    //time run
+    System.setProperty("build.gradle.system.currentTimeMillis",String.valueOf(System.currentTimeMillis()))
+
+    //execute test by tags (@Tag)
+    if(     //System.getProperty("cucumber.filter.tags",null)==null &&
+            System.getProperty("tags",null) != null
+    ){
+        System.setProperty("cucumber.filter.tags",System.getProperty("tags"))
+    }
+
+
+dependencies {
+
+    implementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-rest:${serenityCoreVersion}",
+
+            "ch.qos.logback:logback-classic:${logback_classic_version}"
+
+    testImplementation "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-junit:${serenityCoreVersion}",
+            "org.assertj:assertj-core:${assertj_core_version}"
+
+    //junit5
+    testImplementation "org.junit.platform:junit-platform-launcher:${junit_platform_launcher_version}",
+             "io.cucumber:cucumber-junit-platform-engine:${cucumber_junit_platform_engine_version}",
+             "org.junit.platform:junit-platform-suite:${junit_platform_suite_version}",
+             "org.junit.jupiter:junit-jupiter-engine:${junit_jupiter_engine_version}",
+             "org.junit.vintage:junit-vintage-engine:${junit_vintage_engine_version}"
+
+    //Utils
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+}
+
+/**
+ * TEST PROJECT ADDITIONAL PROPERTIES
+ * /gradle/scripts/test-project.gradle
+ */
+    defaultTasks 'clean','test','aggregate'
+
+    gradle.startParameter.continueOnFailure = true
+
+    serenity {
+        testRoot = System.getProperty("gradle.props.project.package.base")+".runners"
+        requirementsBaseDir = System.getProperty("gradle.props.project.package.resource.test.url")+"/features"
+        reports = [
+                "single-page-html",
+                "navigator"
+        ]
+    }
+
+/**
+ * TEST TASK
+ * /gradle/scripts/task/production-task.gradle
+ */
+    test {
+        useJUnitPlatform()//enable JUnit5
+        systemProperties System.getProperties()
+
+        //execute runners in paralell, enable when managed sessions is coverage
+        maxParallelForks = Runtime.runtime.availableProcessors()
+
+        testLogging.showStandardStreams = true
+
+        reports {
+            html.destination(file(System.getProperty('gradle.props.project.reports.dir')+'/gradle'))
+        }
+    }
+
+
+
+/**
+ * list tasks designed for deploy to the finalized process
+ * /gradle/scripts/task/postproduction-task.gradle
+ */
+
+    /**
+     * task personalized, call java class for available index link to results report
+     */
+    task generateFilmTicket(type: JavaExec) {
+        main = System.getProperty('gradle.props.project.package.base')+'.setups.hooks.postproduction.gradletasks.Ticket'
+        classpath = sourceSets.test.runtimeClasspath
+    }
+
+    task historyReports {
+        doLast {
+
+            def backupDir = file(System.getProperty('gradle.props.project.reports.dir.history')+"/reports-${new Date().format('yyyyMMdd-HHmmss')}")
+            backupDir.mkdirs()
+            copy {
+                from 'target/site'
+                into backupDir
+            }
+            copy {
+                from System.getProperty('gradle.props.project.reports.dir')
+                into backupDir
+            }
+
+            // get lists directories located in history folder
+            def backupDirs = file(System.getProperty('gradle.props.project.reports.dir.history'))
+                    .listFiles().findAll {
+                it.isDirectory() && it.name.startsWith('reports-')
+            }
+
+            // Order files by name desendent
+            backupDirs.sort { a, b -> b.name <=> a.name }
+
+            int limitRecents = System.getProperty('gradle.props.project.reports.recents.limit') as int
+
+            // leave the most recent
+            if (backupDirs.size() > limitRecents) {
+                backupDirs.drop(limitRecents).each { it.deleteDir() }
+            }
+        }
+    }
+
+
+/**
+ * LIFECYCLE PROJECT TASK
+ */
+    /**
+     * clean task before compileJava task
+     * //clearReports task before test task
+     */
+    compileJava.dependsOn(clean)
+    //test.dependsOn(clearReports)
+
+
+    /**
+     * aggregate task after test task
+     * build report target
+     */
+    test.finalizedBy(aggregate)
+
+    /**
+     * reports task after aggregate task
+     * build report summary, one single page html
+     * ./target/site/serenity/../serenity-summary.html
+     * ./target/site/serenity/../navigator/index.html
+     */
+    aggregate.finalizedBy(reports)
+
+    /**
+     * generateFilmTicket task personalized after reports task
+     * organize report serenity: ./target/site/serenity
+     */
+    reports.finalizedBy(generateFilmTicket)
+
+    generateFilmTicket.finalizedBy(historyReports)

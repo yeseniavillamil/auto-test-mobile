@@ -1,0 +1,170 @@
+precondiciones
+
+	inteliJ IDEA
+
+	vysor
+
+	homebreaw
+		para facilitar instalacion via terminal en mac
+
+	nodeJS
+		para facilitar instalacion de npm
+
+
+
+
+instalar android sdk
+
+	se recomienda instalar android studio
+		- facilita la instalacion del sdk de android
+		- permite adminstrar emuladores para pruebas
+
+instalar java (jdk11):
+
+	* revisar la version de java que utiliza el proyecto en:
+		normalmente se ubica en build.gradle
+
+			sourceCompatibility = JavaVersion.VERSION_11
+    		targetCompatibility = JavaVersion.VERSION_11
+
+    * comprobar version de java instalada:
+    	java -version
+
+revisar y ajustar variables de entorno:
+
+	finder > yeseniavillamil
+		"Shift + Command + .": para observar archivos ocultos
+
+			.zshrc: archivo de variables de entorno, abrir con editor de texto
+
+				ajustar variables de entorno para java y android sdk
+
+					export ANDROID_HOME=$HOME/Library/Android/sdk
+					export PATH=$PATH:$ANDROID_HOME/platform-tools
+					export PATH=$PATH:$ANDROID_HOME/tools
+					export PATH=$PATH:$ANDROID_HOME/tools/bin
+					export PATH=$PATH:$ANDROID_HOME/emulator
+
+					export JAVA_HOME =$HOME/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home
+					export PATH=$PATH:$JAVA_HOME/bin
+
+
+abrir proyecto con intelliJ
+
+	file > project structure 
+
+		SDK: confirmar sdks habilitados en el equipo, especialmente el q es compatible con el proyecto
+
+		project: seleccionar el java compatible con el proyecto
+
+		[Apply] + [OK]
+
+revisar compilacion exitosa con gradle
+
+	opciones gradle a la derecha de intelliJ
+		[sync] (actualizar)
+
+		task > build > [clean]: verificar que termine correctamente
+
+
+
+installar appium y uiautomator2 (android)
+	https://appium.io/docs/en/2.0/quickstart/install/
+
+		* se recomienda no utilizar appium desktop, proyecto fuera de mantenimiento
+		* se sugiere utilizar appium como servicio
+
+
+
+
+1. encender appium (terminal macOS):
+	appium --base-path /wd/hub --relaxed-security
+
+		"--base-path /wd/hub": necesario para evitar el 404 de session no encontrada desde appium hacia el dispositivo
+
+			https://stackoverflow.com/questions/67458824/testing-mobile-app-with-appium-webdriverio-no-route-found-for-session
+
+		"--relaxed-security": baja la seguridad para permitir iniciar conexiones desde appium con el device
+
+			por ejemplo:
+
+				curl -X POST http://localhost:4723/wd/hub/session \
+  -H "Content-Type: application/json" \
+  -d '{
+    "capabilities": {
+      "alwaysMatch": {
+        "platformName": "Android",
+        "appium:automationName": "UiAutomator2",
+        "appium:deviceName": "realme C63",
+        "appium:udid": "0I64911I231079DF",
+        "appium:platformVersion": "14",
+        "appium:appPackage": "com.wompi.ventapresente",
+        "appium:appActivity": "com.wompi.ventapresente.MainActivity",
+        "appium:noReset": false,
+        "appium:autoAcceptAlerts": true,
+        "appium:autoGrantPermissions": true
+      }
+    }
+  }'
+
+	ctrl + C: para detener el servicio
+
+
+2. encienda y/o conecte dispositivo para pruebas
+	
+	verifique el dispositivo conectado con el comando
+		"adb devices": lista dispositivos conectados y reconocidos por android
+
+
+	tambien puede encender y verificar con vysor
+
+
+		si ninguna de las 2 alternativas funciona, revise:
+			opciones de desarrollador del dispositivo conectado:
+
+				depuracion USB y otras propiedades relacionadas con USB
+
+				este pendiente del dispositivo para permitir la conexion si es por primera vez
+
+				tambien puede revisar en su macOS, privacidad y seguridad, y ver que nada se este bloqueando por parte de mac
+
+
+
+3. configurar mobile-android.properties, para apuntar a dispositivo:
+	appium.udid: "id del dispositivo conectado"
+		terminal (macOS/intelliJ): adb devices 
+	appium.deviceName: "nombre del dispositivo, pero no es su identificador"
+	appium.platformVersion: verificar version del S.O de android en el dispositivo
+
+		appium.udid = 0I64911I231079DF
+		appium.deviceName= realme C63
+		appium.platformVersion=14
+
+4. comando para lanzar con gradlew, local, android fisico (terminal-intelliJ):
+
+	antes de lanzar el comando de ejecucion, se debe crear unas variables de entorno en la sesion
+		export USER_PASSWORD=DanielPruebas123#
+		export ENV_EXECUTION=local
+
+		sino se configuran estas variables seguramente recibira un error de:
+			org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 400. Message: 'automationName' can't be blank 
+
+
+	despues de esto, lanzar el comando para ejecutar las pruebas
+
+	./gradlew clean -Dproperties=mobile-android.properties test --info aggregate
+
+
+	./gradlew clean -Dproperties=mobile-android.properties test --info aggregate -Dcucumber.filter.tags=@Run
+
+		para lanzar un caso en especifico etiquetado con @Run en el feature
+
+
+	TODO: podria prepararseun lanzador para administrase desde la ejecucion del intelliJ
+
+	5.	
+com.nequi.negocios/com.wompi.ventapresente.MainActivity
+
+
+
+

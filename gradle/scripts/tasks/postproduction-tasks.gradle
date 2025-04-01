@@ -1,0 +1,51 @@
+/**
+ * list tasks designed for deploy to the finalized process
+ */
+
+/**
+ * task personalized, call java class for available index link to results report
+ */
+task generateFilmTicket(type: JavaExec) {
+    main = System.getProperty('gradle.props.project.package.base')+'.setups.hooks.postproduction.gradletasks.Ticket'
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+//task generateRemakeFilmByGradle(type: Test) {
+test {
+    //setup reports gradle test: HTML & JUnit XML
+    reports {
+        html.destination(file(System.getProperty('gradle.props.project.reports.dir')+'/gradle'))
+    }
+}
+
+task historyReports {
+    doLast {
+
+        def backupDir = file(System.getProperty('gradle.props.project.reports.dir.history')+"/reports-${new Date().format('yyyyMMdd-HHmmss')}")
+        backupDir.mkdirs()
+        copy {
+            from 'target/site'
+            into backupDir
+        }
+        copy {
+            from System.getProperty('gradle.props.project.reports.dir')
+            into backupDir
+        }
+
+        // get lists directories located in history folder
+        def backupDirs = file(System.getProperty('gradle.props.project.reports.dir.history'))
+                .listFiles().findAll {
+            it.isDirectory() && it.name.startsWith('reports-')
+        }
+
+        // Order files by name desendent
+        backupDirs.sort { a, b -> b.name <=> a.name }
+
+        int limitRecents = System.getProperty('gradle.props.project.reports.recents.limit') as int
+
+        // leave the most recent
+        if (backupDirs.size() > limitRecents) {
+            backupDirs.drop(limitRecents).each { it.deleteDir() }
+        }
+    }
+}
