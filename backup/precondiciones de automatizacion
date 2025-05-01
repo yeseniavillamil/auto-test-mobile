@@ -30,6 +30,8 @@ instalar java (jdk11):
     * comprobar version de java instalada:
     	java -version
 
+    	/Library/Java/JavaVirtualMachines/
+
 revisar y ajustar variables de entorno:
 
 	finder > yeseniavillamil
@@ -75,6 +77,17 @@ installar appium y uiautomator2 (android)
 		* se sugiere utilizar appium como servicio
 
 
+instalar appium inspector como plugin del servicio de appium
+	https://appium.github.io/appium-inspector/latest/quickstart/installation/#
+
+	appium plugin install --source=npm appium-inspector-plugin
+
+
+	appium --base-path /wd/hub --relaxed-security --use-plugins=inspector --allow-cors
+
+	acceso a inspector via web
+
+		http://localhost:4723/inspector
 
 
 1. encender appium (terminal macOS):
