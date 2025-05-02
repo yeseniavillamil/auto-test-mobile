@@ -89,6 +89,18 @@ instalar appium inspector como plugin del servicio de appium
 
 		http://localhost:4723/inspector
 
+{
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2",
+  "appium:udid": "emulator-5554",
+  "appium:platformVersion": "14",
+  "appium:appPackage": "com.nequi.negocios",
+  "appium:appActivity": "com.wompi.ventapresente.MainActivity",
+  "appium:noReset": false,
+  "appium:autoAcceptAlerts": true,
+  "appium:autoGrantPermissions": true
+}
+
 
 1. encender appium (terminal macOS):
 	appium --base-path /wd/hub --relaxed-security

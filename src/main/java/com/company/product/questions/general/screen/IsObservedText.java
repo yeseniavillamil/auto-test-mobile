@@ -1,13 +1,13 @@
 package com.company.product.questions.general.screen;
 
-import com.company.product.models.dtos.userinterfaces.UserInterfaceDTO;
+import com.company.product.models.dtos.userinterfaces.web.UserInterfaceDTO;
 import com.company.product.questions.javadoc.QuestionsJavaDoc;
 import com.company.product.userinterfaces.general.screen.WebContentUI;
 import com.company.product.utils.params.ParamsUtil;
 import com.company.product.utils.questions.statedelements.constants.enums.ElementStates;
 import com.company.product.utils.questions.statedelements.questions.TheState;
 import com.company.product.utils.userinterfaces.UserInterfacesUtil;
-import com.company.product.utils.userinterfaces.interfaces.IUserInterface;
+import com.company.product.utils.userinterfaces.interfaces.web.IUserInterface;
 import lombok.Builder;
 import lombok.Data;
 import net.serenitybdd.screenplay.Actor;

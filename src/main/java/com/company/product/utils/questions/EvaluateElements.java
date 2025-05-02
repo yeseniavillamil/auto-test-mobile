@@ -1,7 +1,7 @@
 package com.company.product.utils.questions;
 
 import com.company.product.constants.enums.config.Waits;
-import com.company.product.interactions.waits.Wait;
+import com.company.product.interactions.basics.waits.Wait;
 import com.company.product.utils.questions.statedelements.constants.enums.ElementStates;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

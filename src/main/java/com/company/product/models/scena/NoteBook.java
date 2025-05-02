@@ -2,6 +2,7 @@ package com.company.product.models.scena;
 
 
 import com.company.product.models.params.TemplateParams;
+import com.company.product.models.params.features.account.login.LoginParams;
 import com.company.product.models.params.general.screen.StateElementParams;
 import com.company.product.models.params.general.screen.TextElementParams;
 import com.company.product.models.params.general.screen.TextZoneParams;
@@ -15,6 +16,11 @@ import java.util.List;
 public class NoteBook {
 
     private TemplateParams paramsTemplate;
+
+    @JsonProperty("login")
+    private LoginParams paramsLogin;
+
+
 
     @JsonProperty("stateElement")
     private StateElementParams paramsStateElement;

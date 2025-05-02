@@ -1,6 +1,6 @@
 package com.company.product.questions.general.screen;
 
-import com.company.product.models.dtos.userinterfaces.UserInterfaceDTO;
+import com.company.product.models.dtos.userinterfaces.web.UserInterfaceDTO;
 import com.company.product.questions.javadoc.QuestionsJavaDoc;
 import com.company.product.utils.params.ParamsUtil;
 import com.company.product.utils.questions.statedelements.constants.enums.ElementStates;

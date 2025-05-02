@@ -1,6 +1,6 @@
 package com.company.product.utils.userinterfaces;
 
-import com.company.product.models.dtos.userinterfaces.UserInterfaceDTO;
+import com.company.product.models.dtos.userinterfaces.web.UserInterfaceDTO;
 import com.company.product.utils.javadoc.JavaDocUtil;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -67,6 +67,20 @@ public class UserInterfacesUtil
                     .id(id)
                     .name(this.featuresUI.getString(id+".name"))
                     .selector(this.featuresUI.getString(id+".selector"))
+                    .build();
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+    public com.company.product.models.dtos.userinterfaces.app.UserInterfaceDTO getUserInterfaceApp(String id){
+
+        try{
+            return com.company.product.models.dtos.userinterfaces.app.UserInterfaceDTO.builder()
+                    .id(id)
+                    .name(this.featuresUI.getString(id+".name"))
+                    .selectorAndroid(this.featuresUI.getString(id+".selector.android"))
+                    .selectorIOS(this.featuresUI.getString(id+".selector.ios"))
                     .build();
         }catch(Exception e){
             return null;

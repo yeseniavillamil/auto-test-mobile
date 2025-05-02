@@ -1,8 +1,8 @@
 package com.company.product.userinterfaces.general.screen;
 
-import com.company.product.models.dtos.userinterfaces.UserInterfaceDTO;
+import com.company.product.models.dtos.userinterfaces.web.UserInterfaceDTO;
 import com.company.product.userinterfaces.javadoc.UIJavaDoc;
-import com.company.product.utils.userinterfaces.interfaces.IUserInterface;
+import com.company.product.utils.userinterfaces.interfaces.web.IUserInterface;
 
 /**
  * For more information:
