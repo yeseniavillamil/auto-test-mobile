@@ -1,4 +1,4 @@
-package com.company.product.userinterfaces.general.screen;
+package com.company.product.userinterfaces.general.web.screen;
 
 import com.company.product.models.dtos.userinterfaces.web.UserInterfaceDTO;
 import com.company.product.userinterfaces.javadoc.UIJavaDoc;
@@ -11,8 +11,10 @@ import com.company.product.utils.userinterfaces.interfaces.web.IUserInterface;
 public enum WebContentUI implements IUserInterface
 {
 
-    LBL_TEXT("view.contain.text"),
-    LBL_TEXT_EXACTLY("view.contain.text.exactly"),
+    LBL_TEXT("webview.contain.text"),
+    LBL_TEXT_WITH_APOSTROPHE("webview.contain.text.withApostrophe"),
+    LBL_TEXT_EXACTLY("webview.contain.text.exactly"),
+    LBL_TEXT_EXACTLY_WITH_APOSTROPHE("webview.contain.text.exactly.withApostrophe"),
 
     ;
 

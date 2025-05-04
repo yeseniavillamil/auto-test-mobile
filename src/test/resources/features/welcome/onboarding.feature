@@ -20,7 +20,7 @@ Feature: OnBoarding
   @Regression
   @Smoke
   @ID-001 # [FE-HP]: Skip onboarding
-  Scenario Outline: [FE-HP] Skip onboarding when launching the app for the first time
+  Scenario: [FE-HP] Skip onboarding when launching the app for the first time
   [FE-HP] Skip onboarding when launching the app for the first time
       # R/ ¿Where is the actor? --> location / context
       # R/ ¿What did the actor finish doing? --> previously, in past time
@@ -29,10 +29,36 @@ Feature: OnBoarding
     When navigates for the onboarding app
       # R/ ¿What is expected? --> in future time, validation / verification
       # R/ ¿What is the consequence of your actions? --> in future time, what will happen
-    # Then
-    Examples:
-      | email_login             | password_login |
-      | mail@gmail.com |                |
 
+    # TEXT ASSERTIONS - CONTAINS
+    Then in the app content, should be presented: ",Bienvenido,Ingresa con huella"
+    And in the app content, should be presented in "login.info": ",Si ya has creado un usuario,aún no has creado un usuario"
+    And in the app content, should be presented in "login.info" with ""
+      | textZone.text                |
+      | Si ya has creado un usuario  |
+      | aún no has creado un usuario |
+    And in the app content, should be presented in "login.info"
+      | textZone.text                | textZone.parameters |
+      | Si ya has creado un usuario  |                     |
+      | aún no has creado un usuario |                     |
+    And in the app content, should be presented
+      | textZone.section | textZone.parameters | textZone.text                                             |
+      | login.info       |                     | ,Si ya has creado un usuario,aún no has creado un usuario |
+      | login.signin     |                              | Inicia |
 
-
+    # TEXT ASSERTIONS - EXACTLY
+    And in the app content, should be presented exactly: ",¡Bienvenido de vuelta!"
+    And in the app content, should be presented exactly in "login.info": ";Si ya has creado un usuario, por favor ingresa con tu nombre de usuario.;Si aún no has creado un usuario, ingresa con tu correo electrónico."
+    And in the app content, should be presented exactly in "login.info" with ""
+      | textZone.text                                                            |
+      | Si ya has creado un usuario, por favor ingresa con tu nombre de usuario. |
+      | Si aún no has creado un usuario, ingresa con tu correo electrónico.      |
+    And in the app content, should be presented exactly in "login.info"
+      | textZone.text                                                            | textZone.parameters |
+      | Si ya has creado un usuario, por favor ingresa con tu nombre de usuario. |                     |
+      | Si aún no has creado un usuario, ingresa con tu correo electrónico.      |                     |
+    And in the app content, should be presented exactly
+      | textZone.section | textZone.parameters | textZone.text                                                            |
+      | login.info       |                     | Si ya has creado un usuario, por favor ingresa con tu nombre de usuario. |
+      | login.info       |                     | Si aún no has creado un usuario, ingresa con tu correo electrónico.      |
+      | login.signin     |                     | Inicia sesión                                                            |

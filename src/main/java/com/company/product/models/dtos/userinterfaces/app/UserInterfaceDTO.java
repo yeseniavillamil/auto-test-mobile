@@ -20,11 +20,14 @@ public class UserInterfaceDTO
     private String selectorAndroid;
     private String selectorIOS;
 
+    private String selectorAndroidFixed;
+    private String selectorIOSFixed;
+
     public Target getTarget(Object ... parameters)
     {
         String nameFixed = ParamsUtil.processParameters(this.name,parameters);
-        String selectorAndroidFixed = ParamsUtil.processParameters(this.selectorAndroid,parameters);
-        String selectorIOSFixed = ParamsUtil.processParameters(this.selectorIOS,parameters);
+        this.selectorAndroidFixed = ParamsUtil.processParameters(this.selectorAndroid,parameters);
+        this.selectorIOSFixed = ParamsUtil.processParameters(this.selectorIOS,parameters);
 
         return this.getStrategy(
                 Target.the(nameFixed),

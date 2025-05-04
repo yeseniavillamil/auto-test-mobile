@@ -20,18 +20,17 @@ Feature: PoC
   @Regression
   @Smoke
   @ID-001 # [FE-HP]: Start my application
-  Scenario Outline: [FE-HP] Welcome page, when the app is started
+  Scenario: [FE-HP] Welcome page, when the app is started
   [FE-HP] Welcome page, when the app is started
       # R/ ¿Where is the actor? --> location / context
       # R/ ¿What did the actor finish doing? --> previously, in past time
     Given that "the client" started the application in his SmartPhone
       # R/ ¿What is the actor doing? --> in present time, behaviour SUT
-    When fill out access to his account, without mandatory information
+    #When ....
       # R/ ¿What is expected? --> in future time, validation / verification
       # R/ ¿What is the consequence of your actions? --> in future time, what will happen
-    Examples:
-      | email_login             | password_login |
-      | mail@gmail.com |                |
+    #Then ....
+
 
 
 

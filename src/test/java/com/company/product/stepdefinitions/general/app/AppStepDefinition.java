@@ -23,12 +23,4 @@ public class AppStepDefinition {
         Protagonist.onStage().assignName(actor);
     }
 
-    @When("^fill out access to his account, without mandatory information.*")
-    public static void When()
-    {
-        System.err.println("fsdfds");
-    }
-
-
-
 }
