@@ -151,7 +151,7 @@ dependencies {
      * task personalized, call java class for available index link to results report
      */
     task generateFilmTicket(type: JavaExec) {
-        main = System.getProperty('gradle.props.project.package.base')+'.all.setups.hooks.postproduction.gradletasks.Ticket'
+        main = System.getProperty('gradle.props.project.package.base')+'.setups.hooks.postproduction.gradletasks.Ticket'
         classpath = sourceSets.test.runtimeClasspath
     }
 

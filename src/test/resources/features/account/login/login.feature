@@ -35,7 +35,7 @@ Feature: Login
     # Then
     Examples:
       | username_login | password_login |
-      | wompiyes00     | Wompi1234*     |
+      | wompiyes00     | Wompi123*     |
 
 
 
