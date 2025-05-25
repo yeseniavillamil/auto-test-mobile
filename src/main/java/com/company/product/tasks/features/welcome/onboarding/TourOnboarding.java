@@ -1,4 +1,4 @@
-package com.company.product.tasks.features.welcome;
+package com.company.product.tasks.features.welcome.onboarding;
 
 import com.company.product.interactions.basics.clicks.OneClick;
 import com.company.product.tasks.javadoc.TasksJavaDoc;

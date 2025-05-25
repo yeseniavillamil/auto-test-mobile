@@ -5,7 +5,7 @@
 @All
 @App
 @Account
-@Login
+@Logout
 Feature: Login
   As an <Role user>
   I want to <need>

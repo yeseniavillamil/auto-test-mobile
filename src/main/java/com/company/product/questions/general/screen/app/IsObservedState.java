@@ -53,9 +53,10 @@ public class IsObservedState implements Question<Boolean>
             ? ui.getTarget()
             : ui.getTarget(this.parameters.toArray());
 
-        actor.attemptsTo(
-            Scroll.to(uiElement)
-        );
+        //TODO SCROLL TO MOBILE APPIUM
+//        actor.attemptsTo(
+//            Scroll.to(uiElement)
+//        );
 
         return TheState.ofTheElements(
                 uiElement

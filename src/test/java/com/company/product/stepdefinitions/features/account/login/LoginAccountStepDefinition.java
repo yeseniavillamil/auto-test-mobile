@@ -2,16 +2,12 @@ package com.company.product.stepdefinitions.features.account.login;
 
 import com.company.product.models.scena.NoteBook;
 import com.company.product.models.scena.screenplay.Protagonist;
-import com.company.product.questions.TemplateQuestion;
 import com.company.product.stepdefinitions.features.welcome.OnBoardingStepDefinition;
-import com.company.product.stepdefinitions.general.app.AppStepDefinition;
 import com.company.product.stepdefinitions.javadoc.StepDefinitionsJavaDoc;
 import com.company.product.tasks.features.account.login.FillOutLogin;
 import com.company.product.tasks.features.account.login.Login;
-import com.company.product.tasks.features.welcome.TourOnboarding;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import net.serenitybdd.screenplay.GivenWhenThen;
 
 /**
  * For more information:

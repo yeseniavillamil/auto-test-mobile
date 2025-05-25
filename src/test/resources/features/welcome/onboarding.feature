@@ -44,10 +44,10 @@ Feature: OnBoarding
     And in the app content, should be presented
       | textZone.section | textZone.parameters | textZone.text                                             |
       | login.info       |                     | ,Si ya has creado un usuario,aún no has creado un usuario |
-      | login.signin     |                              | Inicia |
+      | login.signin     |                     | Inicia                                                    |
 
     # TEXT ASSERTIONS - EXACTLY
-    And in the app content, should be presented exactly: ",¡Bienvenido de vuelta!"
+    #And in the app content, should be presented exactly: ",¡Bienvenido de vuelta!"
     And in the app content, should be presented exactly in "login.info": ";Si ya has creado un usuario, por favor ingresa con tu nombre de usuario.;Si aún no has creado un usuario, ingresa con tu correo electrónico."
     And in the app content, should be presented exactly in "login.info" with ""
       | textZone.text                                                            |

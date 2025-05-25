@@ -51,9 +51,10 @@ public class IsObservedTextElement implements Question<Boolean>
             ? ui.getTarget()
             : ui.getTarget(this.parameters.toArray());
 
-        actor.attemptsTo(
-            Scroll.to(uiElement)
-        );
+        //TODO SCROLL TO MOBILE APPIUM
+//        actor.attemptsTo(
+//            Scroll.to(uiElement)
+//        );
 
         return actor.asksFor(TextValue.of(uiElement))
                 .trim().equals(text);
